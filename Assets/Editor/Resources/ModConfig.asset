@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 615501dbe4f3fe94fbf4b564abb10237, type: 3}
+  m_Name: ModConfig
+  m_EditorClassIdentifier: 
+  id: mw
+  title: Mini
+  author: Blananas2
+  description: "When I told them to make a module called \u201CMinnie\u201D, I anticipated
+    a module in pink with white dots, but it appears they grew up with Nickelodeon
+    cartoons instead.\n\nWumbo coming soon!\n\nModule by Blananas2.\n\nModule ID:
+    mini\nThe manual can be found here: https://ktane.timwi.de/HTML/Mini.html"
+  version: 
+  outputFolder: build
+  previewImage: {fileID: 2800000, guid: ddea84fa47ddce94eb7c06a58b6728a6, type: 3}
