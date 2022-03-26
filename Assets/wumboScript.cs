@@ -440,11 +440,11 @@ public class wumboScript : MonoBehaviour {
         yield return new WaitForSeconds(.3f);
         switch(chosenOrder[stage-1]) {
             case '1': PanelCovers[0].SetActive(false); ObjectSets[0].SetActive(true); break;
-            case '2': PanelCovers[1].SetActive(false); ObjectSets[0].SetActive(true); break;
-            case '3': PanelCovers[2].SetActive(false); ObjectSets[0].SetActive(true); break;
-            case '4': PanelCovers[3].SetActive(false); ObjectSets[0].SetActive(true); break;
-            case '5': PanelCovers[4].SetActive(false); ObjectSets[0].SetActive(true); break;
-            case '6': PanelCovers[5].SetActive(false); ObjectSets[0].SetActive(true); break;
+            case '2': PanelCovers[1].SetActive(false); ObjectSets[1].SetActive(true); break;
+            case '3': PanelCovers[2].SetActive(false); ObjectSets[2].SetActive(true); break;
+            case '4': PanelCovers[3].SetActive(false); ObjectSets[3].SetActive(true); break;
+            case '5': PanelCovers[4].SetActive(false); ObjectSets[4].SetActive(true); break;
+            case '6': PanelCovers[5].SetActive(false); ObjectSets[5].SetActive(true); break;
         }
         Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.WireSequenceMechanism, transform);
     }
