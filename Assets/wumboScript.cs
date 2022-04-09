@@ -73,6 +73,9 @@ public class wumboScript : MonoBehaviour {
     int moduleId;
     private bool moduleUnsolved;
 
+    private int? _currentPanel = null;
+    private bool _isAnimating;
+
     void Awake () {
         moduleId = moduleIdCounter++;
 
@@ -115,18 +118,18 @@ public class wumboScript : MonoBehaviour {
         for (int a = 0; a < 6; a++) {
             switch (chosenOrder[a]) {
                 case '1': 
-                    //Debug.LogFormat("[Wumbo #{0}] The {1} panel is Wires.", moduleId, ordinals[a]); //Setting up wire colors
+                    Debug.LogFormat("[Wumbo #{0}] The {1} panel is Wires.", moduleId, ordinals[a]); //Setting up wire colors
                     wireColorOrder = wireColorOrder.Shuffle();
                     for (int b = 0; b < 5; b++) {
                         WireObjs[b].GetComponent<MeshRenderer>().material = Colors[wireColorOrder[b]];
                         WireObjs[b+5].GetComponent<MeshRenderer>().material = Colors[wireColorOrder[b]];
                     }
-                    //Debug.LogFormat("<Wumbo #{0}> Wire colors: {1}, {2}, {3}, {4}, {5}", moduleId, colorNames[wireColorOrder[0]], colorNames[wireColorOrder[1]], colorNames[wireColorOrder[2]], colorNames[wireColorOrder[3]], colorNames[wireColorOrder[4]]);
+                    Debug.LogFormat("<Wumbo #{0}> Wire colors: {1}, {2}, {3}, {4}, {5}", moduleId, colorNames[wireColorOrder[0]], colorNames[wireColorOrder[1]], colorNames[wireColorOrder[2]], colorNames[wireColorOrder[3]], colorNames[wireColorOrder[4]]);
                     betterOrder[a] = 0;
                 break;
 
                 case '2': 
-                    //Debug.LogFormat("[Wumbo #{0}] The {1} panel is Buttons.", moduleId, ordinals[a]); //Setting up button colors and labels
+                    Debug.LogFormat("[Wumbo #{0}] The {1} panel is Buttons.", moduleId, ordinals[a]); //Setting up button colors and labels
                     buttonColorOrder = buttonColorOrder.Shuffle();
                     for (int c = 0; c < 5; c++) {
                         ButtonObjs[c].GetComponent<MeshRenderer>().material = Colors[buttonColorOrder[c]];
@@ -134,28 +137,28 @@ public class wumboScript : MonoBehaviour {
                             ButtonTexts[c].color = new Vector4(1, 1, 1, 1);
                         }
                     }
-                    //Debug.LogFormat("[Wumbo #{0}] Button colors: {1}, {2}, {3}, {4}, {5}", moduleId, colorNames[buttonColorOrder[0]], colorNames[buttonColorOrder[1]], colorNames[buttonColorOrder[2]], colorNames[buttonColorOrder[3]], colorNames[buttonColorOrder[4]]);
+                    Debug.LogFormat("[Wumbo #{0}] Button colors: {1}, {2}, {3}, {4}, {5}", moduleId, colorNames[buttonColorOrder[0]], colorNames[buttonColorOrder[1]], colorNames[buttonColorOrder[2]], colorNames[buttonColorOrder[3]], colorNames[buttonColorOrder[4]]);
                     buttonLabelOrder = buttonLabelOrder.Shuffle();
                     for (int d = 0; d < 5; d++) {
                         ButtonTexts[d].text = labelNames[buttonLabelOrder[d]][0].ToString();
                     }
-                    //Debug.LogFormat("<Wumbo #{0}> Button labels: {1}, {2}, {3}, {4}, {5}", moduleId, labelNames[buttonLabelOrder[0]], labelNames[buttonLabelOrder[1]], labelNames[buttonLabelOrder[2]], labelNames[buttonLabelOrder[3]], labelNames[buttonLabelOrder[4]]);
+                    Debug.LogFormat("<Wumbo #{0}> Button labels: {1}, {2}, {3}, {4}, {5}", moduleId, labelNames[buttonLabelOrder[0]], labelNames[buttonLabelOrder[1]], labelNames[buttonLabelOrder[2]], labelNames[buttonLabelOrder[3]], labelNames[buttonLabelOrder[4]]);
                     betterOrder[a] = 1;
                 break;
 
                 case '3': 
-                    //Debug.LogFormat("[Wumbo #{0}] The {1} panel is Keypad.", moduleId, ordinals[a]); //Setting up keypad letters
+                    Debug.LogFormat("[Wumbo #{0}] The {1} panel is Keypad.", moduleId, ordinals[a]); //Setting up keypad letters
                     keypadLetterOrder = keypadLetterOrder.Shuffle();
                     keypadLetterOffset = keypadLetterOffset.Shuffle();
                     for (int e = 0; e < 5; e++) {
                         KeypadTexts[e].text = keypadLetters[keypadLetterOrder[e]*5+keypadLetterOffset[e]].ToString();
                     }
-                    //Debug.LogFormat("[Wumbo #{0}] Keypad labels: {1}, {2}, {3}, {4}, {5}", moduleId, keypadLetters[keypadLetterOrder[0]*5+keypadLetterOffset[0]], keypadLetters[keypadLetterOrder[1]*5+keypadLetterOffset[1]], keypadLetters[keypadLetterOrder[2]*5+keypadLetterOffset[2]], keypadLetters[keypadLetterOrder[3]*5+keypadLetterOffset[3]], keypadLetters[keypadLetterOrder[4]*5+keypadLetterOffset[4]]);
+                    Debug.LogFormat("[Wumbo #{0}] Keypad labels: {1}, {2}, {3}, {4}, {5}", moduleId, keypadLetters[keypadLetterOrder[0]*5+keypadLetterOffset[0]], keypadLetters[keypadLetterOrder[1]*5+keypadLetterOffset[1]], keypadLetters[keypadLetterOrder[2]*5+keypadLetterOffset[2]], keypadLetters[keypadLetterOrder[3]*5+keypadLetterOffset[3]], keypadLetters[keypadLetterOrder[4]*5+keypadLetterOffset[4]]);
                     betterOrder[a] = 2;
                 break;
 
                 case '4': 
-                    //Debug.LogFormat("[Wumbo #{0}] The {1} panel is Switches.", moduleId, ordinals[a]); //Setting up switch colors and positions
+                    Debug.LogFormat("[Wumbo #{0}] The {1} panel is Switches.", moduleId, ordinals[a]); //Setting up switch colors and positions
                     switchColorOrder = switchColorOrder.Shuffle();
                     for (int f = 0; f < 5; f++) {
                         SwitchObjs[f].GetComponent<MeshRenderer>().material = Colors[switchColorOrder[f]];
@@ -165,27 +168,27 @@ public class wumboScript : MonoBehaviour {
                             SwitchObjs[f].transform.localRotation = Quaternion.Euler(-168.638f, -180f, 180f);
                         }
                     }
-                    //Debug.LogFormat("<Wumbo #{0}> Switch colors: {1}, {2}, {3}, {4}, {5}", moduleId, colorNames[switchColorOrder[0]], colorNames[switchColorOrder[1]], colorNames[switchColorOrder[2]], colorNames[switchColorOrder[3]], colorNames[switchColorOrder[4]]);
-                    //Debug.LogFormat("<Wumbo #{0}> Switch positions: {1}, {2}, {3}, {4}, {5}", moduleId, (switchFlipped[0] == 0) ? "up" : "down", (switchFlipped[1] == 0) ? "up" : "down", (switchFlipped[2] == 0) ? "right" : "left", (switchFlipped[3] == 0) ? "down" : "up", (switchFlipped[4] == 0) ? "down" : "up");
+                    Debug.LogFormat("<Wumbo #{0}> Switch colors: {1}, {2}, {3}, {4}, {5}", moduleId, colorNames[switchColorOrder[0]], colorNames[switchColorOrder[1]], colorNames[switchColorOrder[2]], colorNames[switchColorOrder[3]], colorNames[switchColorOrder[4]]);
+                    Debug.LogFormat("<Wumbo #{0}> Switch positions: {1}, {2}, {3}, {4}, {5}", moduleId, (switchFlipped[0] == 0) ? "up" : "down", (switchFlipped[1] == 0) ? "up" : "down", (switchFlipped[2] == 0) ? "right" : "left", (switchFlipped[3] == 0) ? "down" : "up", (switchFlipped[4] == 0) ? "down" : "up");
                     betterOrder[a] = 3;
                 break;
 
                 case '5': 
-                    //Debug.LogFormat("[Wumbo #{0}] The {1} panel is Dial.", moduleId, ordinals[a]); //Setting up dial shapes and initial dial rotation
+                    Debug.LogFormat("[Wumbo #{0}] The {1} panel is Dial.", moduleId, ordinals[a]); //Setting up dial shapes and initial dial rotation
                     dialShapeOrder = dialShapeOrder.Shuffle();
                     for (int g = 0; g < 5; g++) {
                         DialSprites[g].sprite = DialShapes[dialShapeOrder[g]];
                     }
-                    //Debug.LogFormat("[Wumbo #{0}] Dial shapes: {1}, {2}, {3}, {4}, {5}", moduleId, shapeNames[dialShapeOrder[0]], shapeNames[dialShapeOrder[1]], shapeNames[dialShapeOrder[2]], shapeNames[dialShapeOrder[3]], shapeNames[dialShapeOrder[4]]);
+                    Debug.LogFormat("[Wumbo #{0}] Dial shapes: {1}, {2}, {3}, {4}, {5}", moduleId, shapeNames[dialShapeOrder[0]], shapeNames[dialShapeOrder[1]], shapeNames[dialShapeOrder[2]], shapeNames[dialShapeOrder[3]], shapeNames[dialShapeOrder[4]]);
                     dialRotation = UnityEngine.Random.Range(0, 5);
                     DialObj.transform.localPosition = new Vector3(dialPositions[dialRotation], 0.0205f, dialPositions[dialRotation+5]);
                     DialObj.transform.localRotation = Quaternion.Euler(270f, 0f, 180f - 45f*dialRotation);
-                    //Debug.LogFormat("<Wumbo #{0}> Dial's initial rotation: {1}", moduleId, rotationNames[dialRotation]);
+                    Debug.LogFormat("<Wumbo #{0}> Dial's initial rotation: {1}", moduleId, rotationNames[dialRotation]);
                     betterOrder[a] = 4;
                 break;
 
                 case '6': 
-                    //Debug.LogFormat("[Wumbo #{0}] The {1} panel is Arrows.", moduleId, ordinals[a]); //Setting up arrow order
+                    Debug.LogFormat("[Wumbo #{0}] The {1} panel is Arrows.", moduleId, ordinals[a]); //Setting up arrow order
                     arrowOrder = arrowOrder.Shuffle();
                     for (int h = 0; h < 5; h++) {
                         switch (h) { //0.013
@@ -196,7 +199,7 @@ public class wumboScript : MonoBehaviour {
                             case 4: ArrowObjs[arrowOrder[h]].transform.localPosition += new Vector3(0f, 0f, -0.013f); break;
                         }
                     }
-                    //Debug.LogFormat("[Wumbo #{0}] Arrow order: {1}, {2}, {3}, {4}, {5}", moduleId, directionNames[arrowOrder[0]], directionNames[arrowOrder[1]], directionNames[arrowOrder[2]], directionNames[arrowOrder[3]], directionNames[arrowOrder[4]]);
+                    Debug.LogFormat("[Wumbo #{0}] Arrow order: {1}, {2}, {3}, {4}, {5}", moduleId, directionNames[arrowOrder[0]], directionNames[arrowOrder[1]], directionNames[arrowOrder[2]], directionNames[arrowOrder[3]], directionNames[arrowOrder[4]]);
                     betterOrder[a] = 5;
                 break;
             }
@@ -208,12 +211,12 @@ public class wumboScript : MonoBehaviour {
     void OpenLastPanel() {
         moduleOpened = true;
         switch (chosenOrder[5]) {
-            case '1': PanelCovers[0].SetActive(false); ObjectSets[0].SetActive(true); break;
-            case '2': PanelCovers[1].SetActive(false); ObjectSets[1].SetActive(true); break;
-            case '3': PanelCovers[2].SetActive(false); ObjectSets[2].SetActive(true); break;
-            case '4': PanelCovers[3].SetActive(false); ObjectSets[3].SetActive(true); break;
-            case '5': PanelCovers[4].SetActive(false); ObjectSets[4].SetActive(true); break;
-            case '6': PanelCovers[5].SetActive(false); ObjectSets[5].SetActive(true); break;
+            case '1': PanelCovers[0].SetActive(false); ObjectSets[0].SetActive(true); _currentPanel = 0; SetTwitchHelpMessage(0); break;
+            case '2': PanelCovers[1].SetActive(false); ObjectSets[1].SetActive(true); _currentPanel = 1; SetTwitchHelpMessage(1); break;
+            case '3': PanelCovers[2].SetActive(false); ObjectSets[2].SetActive(true); _currentPanel = 2; SetTwitchHelpMessage(2); break;
+            case '4': PanelCovers[3].SetActive(false); ObjectSets[3].SetActive(true); _currentPanel = 3; SetTwitchHelpMessage(3); break;
+            case '5': PanelCovers[4].SetActive(false); ObjectSets[4].SetActive(true); _currentPanel = 4; SetTwitchHelpMessage(4); break;
+            case '6': PanelCovers[5].SetActive(false); ObjectSets[5].SetActive(true); _currentPanel = 5; SetTwitchHelpMessage(5); break;
         }
         Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.WireSequenceMechanism, transform);
         stage = 6;
@@ -225,7 +228,7 @@ public class wumboScript : MonoBehaviour {
             if (wire == Wires[i]) {
                 Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.WireSnip, wire.transform);
                 WireObjs[i].SetActive(false);
-                //Debug.LogFormat("[Wumbo #{0}] Stage {1}: You cut wire {2}.", moduleId, stage, i+1);
+                Debug.LogFormat("[Wumbo #{0}] Stage {1}: You cut wire {2}.", moduleId, stage, i+1);
                 CheckValidity(0, i);
             }
         }
@@ -236,7 +239,7 @@ public class wumboScript : MonoBehaviour {
         for (int j = 0; j < 5; j++) {
             if (button == Buttons[j]) {
                 Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, button.transform);
-                //Debug.LogFormat("[Wumbo #{0}] Stage {1}: You pressed the {2} button.", moduleId, stage, colorNames[buttonColorOrder[j]]);
+                Debug.LogFormat("[Wumbo #{0}] Stage {1}: You pressed the {2} button.", moduleId, stage, colorNames[buttonColorOrder[j]]);
                 CheckValidity(1, j);
             }
         }
@@ -247,7 +250,7 @@ public class wumboScript : MonoBehaviour {
         for (int k = 0; k < 5; k++) {
             if (key == Keypad[k]) {
                 Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, key.transform);
-                //Debug.LogFormat("[Wumbo #{0}] Stage {1}: You pressed the key labeled {2}.", moduleId, stage, keypadLetters[keypadLetterOrder[k]*5 + keypadLetterOffset[k]]);
+                Debug.LogFormat("[Wumbo #{0}] Stage {1}: You pressed the key labeled {2}.", moduleId, stage, keypadLetters[keypadLetterOrder[k]*5 + keypadLetterOffset[k]]);
                 CheckValidity(2, k);
             }
         }
@@ -267,7 +270,7 @@ public class wumboScript : MonoBehaviour {
                     SwitchObjs[l].transform.localRotation = Quaternion.Euler(-168.638f, -0f, 180f);
                 }
                 string[] s = {"top-left", "top-right", "center", "bottom-left", "bottom-right"};
-                //Debug.LogFormat("[Wumbo #{0}] Stage {1}: You toggled the {2} switch.", moduleId, stage, s[l]);
+                Debug.LogFormat("[Wumbo #{0}] Stage {1}: You toggled the {2} switch.", moduleId, stage, s[l]);
                 CheckValidity(3, l);
             }
         }
@@ -283,7 +286,7 @@ public class wumboScript : MonoBehaviour {
     void DialSubmit() {
         DialButton.AddInteractionPunch();
         Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, DialButton.transform);
-        //Debug.LogFormat("[Wumbo #{0}] Stage {1}: You submitted the dial when it was set to {2}.", moduleId, stage, shapeNames[dialShapeOrder[4-dialRotation]]);
+        Debug.LogFormat("[Wumbo #{0}] Stage {1}: You submitted the dial when it was set to {2}.", moduleId, stage, shapeNames[dialShapeOrder[4-dialRotation]]);
         CheckValidity(4, dialRotation);
     }
 
@@ -292,129 +295,15 @@ public class wumboScript : MonoBehaviour {
         for (int m = 0; m < 5; m++) {
             if (arrow == Arrows[m]) {
                 Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, arrow.transform);
-                //Debug.LogFormat("[Wumbo #{0}] Stage {1}: You pressed the {2} arrow.", moduleId, stage, directionNames[m]);
+                Debug.LogFormat("[Wumbo #{0}] Stage {1}: You pressed the {2} arrow.", moduleId, stage, directionNames[m]);
                 CheckValidity(5, m);
             }
         }
     }
 
     void CheckValidity (int n, int o) {
-        bool p = false; //set to true if you did it correctly
-        if (stage == 1) {
-            switch (betterOrder[0]) {
-                case 0: 
-                    switch (wumboNumber) {
-                        case 0: p = (Array.IndexOf(wireColorOrder, 0) == o); break; //ik, ik, ik i can optimize this but THOG DO NOT CAARE
-                        case 1: p = (Array.IndexOf(wireColorOrder, 1) == o); break;
-                        case 2: p = (Array.IndexOf(wireColorOrder, 2) == o); break;
-                        case 3: p = (Array.IndexOf(wireColorOrder, 3) == o); break;
-                        case 4: p = (Array.IndexOf(wireColorOrder, 4) == o); break;
-                    }
-                break;
-                case 1: 
-                    switch (wumboNumber) {
-                        case 0: p = (Array.IndexOf(buttonLabelOrder, 0) == o); break; //ik, ik, ik i can optimize this but THOG DO NOT CAARE
-                        case 1: p = (Array.IndexOf(buttonLabelOrder, 1) == o); break;
-                        case 2: p = (Array.IndexOf(buttonLabelOrder, 2) == o); break;
-                        case 3: p = (Array.IndexOf(buttonLabelOrder, 3) == o); break;
-                        case 4: p = (Array.IndexOf(buttonLabelOrder, 4) == o); break;
-                    }
-                break;
-                case 2: 
-                    switch (wumboNumber) {
-                        case 0: p = (4 == o); break;
-                        case 1: p = (0 == o); break;
-                        case 2: p = (2 == o); break;
-                        case 3: p = (1 == o); break;
-                        case 4: p = (3 == o); break;
-                    }
-                break;
-                case 3: 
-                    switch (wumboNumber) {
-                        case 0: p = (Array.IndexOf(switchColorOrder, 1) == o); break;
-                        case 1: p = (Array.IndexOf(switchColorOrder, 4) == o); break;
-                        case 2: p = (Array.IndexOf(switchColorOrder, 3) == o); break;
-                        case 3: p = (Array.IndexOf(switchColorOrder, 2) == o); break;
-                        case 4: p = (Array.IndexOf(switchColorOrder, 0) == o); break;
-                    }
-                break;
-                case 4: 
-                    switch (wumboNumber) {
-                        case 0: p = (0 == o); break;
-                        case 1: p = (1 == o); break;
-                        case 2: p = (2 == o); break;
-                        case 3: p = (3 == o); break;
-                        case 4: p = (4 == o); break;
-                    }
-                break;
-                case 5: 
-                    switch (wumboNumber) {
-                        case 0: p = (Array.IndexOf(arrowOrder, o) == 2); break;
-                        case 1: p = (Array.IndexOf(arrowOrder, o) == 4); break;
-                        case 2: p = (Array.IndexOf(arrowOrder, o) == 0); break;
-                        case 3: p = (Array.IndexOf(arrowOrder, o) == 3); break;
-                        case 4: p = (Array.IndexOf(arrowOrder, o) == 1); break;
-                    }
-                break;
-            }
-        } else {
-            switch (n) {
-                case 0: 
-                    switch (betterOrder[stage-2]) {
-                        case 1: p = (o == 0); break;
-                        case 2: p = (o == 4); break;
-                        case 3: p = (o == 1); break;
-                        case 4: p = (o == 2); break;
-                        case 5: p = (o == 3); break;
-                    }
-                break;
-                case 1: 
-                    switch (betterOrder[stage-2]) {
-                        case 0: p = (buttonColorOrder[o] == 4); break;
-                        case 2: p = (buttonColorOrder[o] == 1); break;
-                        case 3: p = (buttonColorOrder[o] == 0); break;
-                        case 4: p = (buttonColorOrder[o] == 3); break;
-                        case 5: p = (buttonColorOrder[o] == 2); break;
-                    }
-                break;
-                case 2: 
-                    switch (betterOrder[stage-2]) {
-                        case 0: p = (keypadLetterOrder[o] == 0); break;
-                        case 1: p = (keypadLetterOrder[o] == 1); break;
-                        case 3: p = (keypadLetterOrder[o] == 2); break;
-                        case 4: p = (keypadLetterOrder[o] == 4); break;
-                        case 5: p = (keypadLetterOrder[o] == 3); break;
-                    }
-                break;
-                case 3: 
-                    switch (betterOrder[stage-2]) {
-                        case 0: p = (o == 0); break;
-                        case 1: p = (o == 1); break;
-                        case 2: p = (o == 2); break;
-                        case 4: p = (o == 3); break;
-                        case 5: p = (o == 4); break;
-                    }
-                break;
-                case 4: 
-                    switch (betterOrder[stage-2]) {
-                        case 0: p = (dialShapeOrder[4-o] == 2); break;
-                        case 1: p = (dialShapeOrder[4-o] == 1); break;
-                        case 2: p = (dialShapeOrder[4-o] == 0); break;
-                        case 3: p = (dialShapeOrder[4-o] == 3); break;
-                        case 5: p = (dialShapeOrder[4-o] == 4); break;
-                    }
-                break;
-                case 5: 
-                    switch (betterOrder[stage-2]) {
-                        case 0: p = (o == 1); break;
-                        case 1: p = (o == 2); break;
-                        case 2: p = (o == 0); break;
-                        case 3: p = (o == 3); break;
-                        case 4: p = (o == 4); break;
-                    }
-                break;
-            }
-        }
+
+        bool p = CheckAns(n, o);
         if (p) {
             previouslyActivePanel = n;
             stage -= 1;
@@ -430,8 +319,147 @@ public class wumboScript : MonoBehaviour {
         }
     }
 
+    private bool CheckAns(int n, int o)
+    {
+        bool p = false; //set to true if you did it correctly
+        if (stage == 1)
+        {
+            switch (betterOrder[0])
+            {
+                case 0:
+                    switch (wumboNumber)
+                    {
+                        case 0: p = (Array.IndexOf(wireColorOrder, 0) == o); break; //ik, ik, ik i can optimize this but THOG DO NOT CAARE
+                        case 1: p = (Array.IndexOf(wireColorOrder, 1) == o); break;
+                        case 2: p = (Array.IndexOf(wireColorOrder, 2) == o); break;
+                        case 3: p = (Array.IndexOf(wireColorOrder, 3) == o); break;
+                        case 4: p = (Array.IndexOf(wireColorOrder, 4) == o); break;
+                    }
+                    break;
+                case 1:
+                    switch (wumboNumber)
+                    {
+                        case 0: p = (Array.IndexOf(buttonLabelOrder, 0) == o); break; //ik, ik, ik i can optimize this but THOG DO NOT CAARE
+                        case 1: p = (Array.IndexOf(buttonLabelOrder, 1) == o); break;
+                        case 2: p = (Array.IndexOf(buttonLabelOrder, 2) == o); break;
+                        case 3: p = (Array.IndexOf(buttonLabelOrder, 3) == o); break;
+                        case 4: p = (Array.IndexOf(buttonLabelOrder, 4) == o); break;
+                    }
+                    break;
+                case 2:
+                    switch (wumboNumber)
+                    {
+                        case 0: p = (4 == o); break;
+                        case 1: p = (0 == o); break;
+                        case 2: p = (2 == o); break;
+                        case 3: p = (1 == o); break;
+                        case 4: p = (3 == o); break;
+                    }
+                    break;
+                case 3:
+                    switch (wumboNumber)
+                    {
+                        case 0: p = (Array.IndexOf(switchColorOrder, 1) == o); break;
+                        case 1: p = (Array.IndexOf(switchColorOrder, 4) == o); break;
+                        case 2: p = (Array.IndexOf(switchColorOrder, 3) == o); break;
+                        case 3: p = (Array.IndexOf(switchColorOrder, 2) == o); break;
+                        case 4: p = (Array.IndexOf(switchColorOrder, 0) == o); break;
+                    }
+                    break;
+                case 4:
+                    switch (wumboNumber)
+                    {
+                        case 0: p = (0 == o); break;
+                        case 1: p = (1 == o); break;
+                        case 2: p = (2 == o); break;
+                        case 3: p = (3 == o); break;
+                        case 4: p = (4 == o); break;
+                    }
+                    break;
+                case 5:
+                    switch (wumboNumber)
+                    {
+                        case 0: p = (Array.IndexOf(arrowOrder, o) == 2); break;
+                        case 1: p = (Array.IndexOf(arrowOrder, o) == 4); break;
+                        case 2: p = (Array.IndexOf(arrowOrder, o) == 0); break;
+                        case 3: p = (Array.IndexOf(arrowOrder, o) == 3); break;
+                        case 4: p = (Array.IndexOf(arrowOrder, o) == 1); break;
+                    }
+                    break;
+            }
+        }
+        else
+        {
+            switch (n)
+            {
+                case 0:
+                    switch (betterOrder[stage - 2])
+                    {
+                        case 1: p = (o == 0); break;
+                        case 2: p = (o == 4); break;
+                        case 3: p = (o == 1); break;
+                        case 4: p = (o == 2); break;
+                        case 5: p = (o == 3); break;
+                    }
+                    break;
+                case 1:
+                    switch (betterOrder[stage - 2])
+                    {
+                        case 0: p = (buttonColorOrder[o] == 4); break;
+                        case 2: p = (buttonColorOrder[o] == 1); break;
+                        case 3: p = (buttonColorOrder[o] == 0); break;
+                        case 4: p = (buttonColorOrder[o] == 3); break;
+                        case 5: p = (buttonColorOrder[o] == 2); break;
+                    }
+                    break;
+                case 2:
+                    switch (betterOrder[stage - 2])
+                    {
+                        case 0: p = (keypadLetterOrder[o] == 0); break;
+                        case 1: p = (keypadLetterOrder[o] == 1); break;
+                        case 3: p = (keypadLetterOrder[o] == 2); break;
+                        case 4: p = (keypadLetterOrder[o] == 4); break;
+                        case 5: p = (keypadLetterOrder[o] == 3); break;
+                    }
+                    break;
+                case 3:
+                    switch (betterOrder[stage - 2])
+                    {
+                        case 0: p = (o == 0); break;
+                        case 1: p = (o == 1); break;
+                        case 2: p = (o == 2); break;
+                        case 4: p = (o == 3); break;
+                        case 5: p = (o == 4); break;
+                    }
+                    break;
+                case 4:
+                    switch (betterOrder[stage - 2])
+                    {
+                        case 0: p = (dialShapeOrder[4 - o] == 2); break;
+                        case 1: p = (dialShapeOrder[4 - o] == 1); break;
+                        case 2: p = (dialShapeOrder[4 - o] == 0); break;
+                        case 3: p = (dialShapeOrder[4 - o] == 3); break;
+                        case 5: p = (dialShapeOrder[4 - o] == 4); break;
+                    }
+                    break;
+                case 5:
+                    switch (betterOrder[stage - 2])
+                    {
+                        case 0: p = (o == 1); break;
+                        case 1: p = (o == 2); break;
+                        case 2: p = (o == 0); break;
+                        case 3: p = (o == 3); break;
+                        case 4: p = (o == 4); break;
+                    }
+                    break;
+            }
+        }
+        return p;
+    }
+
     IEnumerator RevealNext()
 	{
+        _isAnimating = true;
 		yield return new WaitForSeconds(.3f);
         PanelCovers[previouslyActivePanel].SetActive(true);
         ObjectSets[previouslyActivePanel].SetActive(false); 
@@ -439,14 +467,15 @@ public class wumboScript : MonoBehaviour {
         Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.WireSequenceMechanism, transform);
         yield return new WaitForSeconds(.3f);
         switch(chosenOrder[stage-1]) {
-            case '1': PanelCovers[0].SetActive(false); ObjectSets[0].SetActive(true); break;
-            case '2': PanelCovers[1].SetActive(false); ObjectSets[1].SetActive(true); break;
-            case '3': PanelCovers[2].SetActive(false); ObjectSets[2].SetActive(true); break;
-            case '4': PanelCovers[3].SetActive(false); ObjectSets[3].SetActive(true); break;
-            case '5': PanelCovers[4].SetActive(false); ObjectSets[4].SetActive(true); break;
-            case '6': PanelCovers[5].SetActive(false); ObjectSets[5].SetActive(true); break;
+            case '1': PanelCovers[0].SetActive(false); ObjectSets[0].SetActive(true); _currentPanel = 0; SetTwitchHelpMessage(0); break;
+            case '2': PanelCovers[1].SetActive(false); ObjectSets[1].SetActive(true); _currentPanel = 1; SetTwitchHelpMessage(1); break;
+            case '3': PanelCovers[2].SetActive(false); ObjectSets[2].SetActive(true); _currentPanel = 2; SetTwitchHelpMessage(2); break;
+            case '4': PanelCovers[3].SetActive(false); ObjectSets[3].SetActive(true); _currentPanel = 3; SetTwitchHelpMessage(3); break;
+            case '5': PanelCovers[4].SetActive(false); ObjectSets[4].SetActive(true); _currentPanel = 4; SetTwitchHelpMessage(4); break;
+            case '6': PanelCovers[5].SetActive(false); ObjectSets[5].SetActive(true); _currentPanel = 5; SetTwitchHelpMessage(5); break;
         }
         Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.WireSequenceMechanism, transform);
+        _isAnimating = false;
     }
 
     void CalculateNumber() {
@@ -540,6 +569,190 @@ public class wumboScript : MonoBehaviour {
             Audio.PlaySoundAtTransform("k"+UnityEngine.Random.Range(0,11).ToString(), transform);
             yield return new WaitForSeconds(.05f);
             Paper.transform.localPosition -= new Vector3(0.00587f, 0f, -0.00448f);
+        }
+    }
+
+    private void SetTwitchHelpMessage(int num)
+    {
+        switch (num)
+        {
+            case 0:
+                TwitchHelpMessage = "Wires: !{0} cut 1 [Cuts wire 1. Wires are numbered from top to bottom.]";
+                break;
+            case 1:
+                TwitchHelpMessage = "Buttons: !{0} press 1 [Presses button 1. Buttons are numbered in reading order.]";
+                break;
+            case 2:
+                TwitchHelpMessage = "Keypad: !{0} press 1 [Presses key 1. Keys are numbered in reading order.]";
+                break;
+            case 3:
+                TwitchHelpMessage = "Switches: !{0} flip 1 [Flips switch 1. Switches are numbered in reading order.]";
+                break;
+            case 4:
+                TwitchHelpMessage = "Dial: !{0} set 1 [Sets the dial to position 1. Positions are numbered from top to bottom.";
+                break;
+            case 5:
+                TwitchHelpMessage = "Arrows: !{0} pos up [Presses the arrow in the UP position.] | !{0} dir up [Presses the arrow pointing up.] | Directions are up, down, left, right, all. Positions are up, down, left, right, middle.";
+                break;
+        }
+    }
+
+#pragma warning disable 0414
+    private string TwitchHelpMessage = "!{0} start [Focus on the module.]";
+#pragma warning restore 0414
+
+    // Implemented by Quinn Wuest.
+    private IEnumerator ProcessTwitchCommand(string command)
+    {
+        Match m;
+        if (_currentPanel == null)
+        {
+            m = Regex.Match(command, @"^\s*start\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            if (!m.Success)
+                yield break;
+            yield return null;
+            Module.GetComponent<KMSelectable>().OnInteract();
+            yield break;
+        }
+        if (_currentPanel == 0)
+        {
+            m = Regex.Match(command, @"^\s*cut\s+(\d)\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            if (!m.Success)
+                yield break;
+            int val;
+            if (!int.TryParse(m.Groups[1].Value, out val) || val < 1 || val > 5)
+                yield break;
+            yield return null;
+            Wires[5 - val].OnInteract();
+            yield break;
+        }
+        if (_currentPanel == 1)
+        {
+            m = Regex.Match(command, @"^\s*press\s+(\d)\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            if (!m.Success)
+                yield break;
+            int val;
+            if (!int.TryParse(m.Groups[1].Value, out val) || val < 1 || val > 5)
+                yield break;
+            yield return null;
+            Buttons[5 - val].OnInteract();
+            yield break;
+        }
+        if (_currentPanel == 2)
+        {
+            m = Regex.Match(command, @"^\s*press\s+(\d)\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            if (!m.Success)
+                yield break;
+            int val;
+            if (!int.TryParse(m.Groups[1].Value, out val) || val < 1 || val > 5)
+                yield break;
+            yield return null;
+            Keypad[5 - val].OnInteract();
+            yield break;
+        }
+        if (_currentPanel == 3)
+        {
+            m = Regex.Match(command, @"^\s*flip\s+(\d)\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            if (!m.Success)
+                yield break;
+            int val;
+            if (!int.TryParse(m.Groups[1].Value, out val) || val < 1 || val > 5)
+                yield break;
+            yield return null;
+            Switches[5 - val].OnInteract();
+            yield break;
+        }
+        if (_currentPanel == 4)
+        {
+            m = Regex.Match(command, @"^\s*set\s+(\d)\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            if (!m.Success)
+                yield break;
+            int val;
+            if (!int.TryParse(m.Groups[1].Value, out val) || val < 1 || val > 5)
+                yield break;
+            yield return null;
+            while (dialRotation != val - 1)
+            {
+                DialTip.OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+            DialButton.OnInteract();
+            yield break;
+        }
+        if (_currentPanel == 5)
+        {
+            var parameters = command.ToLowerInvariant().Split(' ');
+            if (parameters.Length < 2)
+                yield break;
+            m = Regex.Match(parameters[0], @"^\s*dir\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            if (m.Success)
+            {
+                var posNames = new string[] { "down", "right", "all", "left", "up" };
+                var ix = Array.IndexOf(posNames, parameters[1]);
+                if (ix == -1)
+                    yield break;
+                yield return null;
+                Arrows[ix].OnInteract();
+                yield break;
+            }
+            m = Regex.Match(parameters[0], @"^\s*pos\s*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            if (m.Success)
+            {
+                var posNames = new string[] { "down", "right", "middle", "left", "up" };
+                var ix = Array.IndexOf(posNames, parameters[1]);
+                if (ix == -1)
+                    yield break;
+                yield return null;
+                Arrows[arrowOrder[ix]].OnInteract();
+                yield break;
+            }
+        }
+    }
+
+    // Implemented by Quinn Wuest.
+    private IEnumerator TwitchHandleForcedSolve()
+    {
+        while (!moduleUnsolved)
+        {
+            if (stage == 0)
+            {
+                yield return true;
+                continue;
+            }
+            if (_currentPanel == null)
+            {
+                Module.GetComponent<KMSelectable>().OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+            else
+            {
+                int ix = 99;
+                for (int x = 0; x < 5; x++)
+                    if (CheckAns((int)_currentPanel, x))
+                        ix = x;
+                if (_currentPanel == 0)
+                    Wires[ix].OnInteract();
+                else if (_currentPanel == 1)
+                    Buttons[ix].OnInteract();
+                else if (_currentPanel == 2)
+                    Keypad[ix].OnInteract();
+                else if (_currentPanel == 3)
+                    Switches[ix].OnInteract();
+                else if (_currentPanel == 4)
+                {
+                    while (dialRotation != ix)
+                    {
+                        DialTip.OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    DialButton.OnInteract();
+                }
+                else if (_currentPanel == 5)
+                    Arrows[ix].OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+            while (_isAnimating)
+                yield return null;
         }
     }
 }
