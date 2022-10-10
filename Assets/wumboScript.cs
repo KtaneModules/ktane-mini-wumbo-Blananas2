@@ -349,11 +349,11 @@ public class wumboScript : MonoBehaviour {
                 case 2:
                     switch (wumboNumber)
                     {
-                        case 0: p = (4 == o); break;
+                        case 0: p = (3 == o); break;
                         case 1: p = (0 == o); break;
                         case 2: p = (2 == o); break;
                         case 3: p = (1 == o); break;
-                        case 4: p = (3 == o); break;
+                        case 4: p = (4 == o); break;
                     }
                     break;
                 case 3:
@@ -435,11 +435,11 @@ public class wumboScript : MonoBehaviour {
                 case 4:
                     switch (betterOrder[stage - 2])
                     {
-                        case 0: p = (dialShapeOrder[4 - o] == 2); break;
-                        case 1: p = (dialShapeOrder[4 - o] == 1); break;
-                        case 2: p = (dialShapeOrder[4 - o] == 0); break;
-                        case 3: p = (dialShapeOrder[4 - o] == 3); break;
-                        case 5: p = (dialShapeOrder[4 - o] == 4); break;
+                        case 0: p = (dialShapeOrder[o] == 2); break;
+                        case 1: p = (dialShapeOrder[o] == 1); break;
+                        case 2: p = (dialShapeOrder[o] == 0); break;
+                        case 3: p = (dialShapeOrder[o] == 3); break;
+                        case 5: p = (dialShapeOrder[o] == 4); break;
                     }
                     break;
                 case 5:

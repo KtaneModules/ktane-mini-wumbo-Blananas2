@@ -16,8 +16,10 @@ MonoBehaviour:
   author: Blananas2
   description: "When I told them to make a module called \u201CMinnie\u201D, I anticipated
     a module in pink with white dots, but it appears they grew up with Nickelodeon
-    cartoons instead.\n\nWumbo coming soon!\n\nModule by Blananas2.\n\nModule ID:
-    mini\nThe manual can be found here: https://ktane.timwi.de/HTML/Mini.html"
+    cartoons instead.\nCome on, you know... I wumbo, you wumbo, he/she/me wumbo. Wumboing,
+    Wumbology, the study of Wumbo! It\u2019s first grade, Spongebob.\n\nModule by
+    Blananas2.\n\nModule ID: mini, wumbo\nThe manuals can be found here: \nhttps://ktane.timwi.de/HTML/Mini.html
+    \nhttps://ktane.timwi.de/HTML/Wumbo.html"
   version: 
   outputFolder: build
-  previewImage: {fileID: 2800000, guid: ddea84fa47ddce94eb7c06a58b6728a6, type: 3}
+  previewImage: {fileID: 2800000, guid: ca67eba675ebd3d4285de6917efda12c, type: 3}
